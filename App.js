@@ -23,7 +23,7 @@ app.use(cors());
 // ))
 
 mongoose.connect(
-    "mongodb+srv://sagardas4work:Sagardas4mongodb@cluster0.cdhmr.mongodb.net/TodoApp?retryWrites=true&w=majority",
+process.env.MONGODB_URL ,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
