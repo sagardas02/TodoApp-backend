@@ -2,6 +2,7 @@ const express= require("express")
 const mongoose = require('mongoose')
 const cors=require("cors")
 const bodyParser =require("body-parser")
+require('dotenv').config();
 
 // server PORT is HERE
 const port = 5000;
@@ -9,13 +10,7 @@ const port = 5000;
 const app= express();
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(cors(
-    {
-        origin: ["https://sagardas02-todo-app.vercel.app"],
-        methods: ["POST", "GET", "PUT", "DELETE"],
-        credentials: true
-    }
-));
+app.use(cors());
 
 // connection of Database
 
@@ -29,7 +24,7 @@ app.use(cors(
 // ))
 
 mongoose.connect(
-process.env.MONGODB_URL ,
+process.env.MONGODB_URL  ,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -53,7 +48,7 @@ const TodoPost = mongoose.model("TodoPost", TodoPostSchema );
 
 
 //add route
-app.post('/api/add', async (req,res)=>{
+app.post('/add', async (req,res)=>{
     try{
         const Todoposts = new TodoPost(req.body)
         const Addtodoposts = await Todoposts.save();
@@ -80,7 +75,7 @@ app.delete('/api/delete-todoposts/:id', async (req,res)=>{
 
 
 // view Route
-app.get('/api', async (req,res)=>{
+app.get('/', async (req,res)=>{
     try{
         const todoposts = await TodoPost.find();
         res.json(todoposts);
@@ -89,7 +84,7 @@ app.get('/api', async (req,res)=>{
     }
 })
 
-app.get('/api/id/:id', async (req,res)=>{
+app.get('/id/:id', async (req,res)=>{
     try{
         const todoposts = await TodoPost.findById(req.params.id);
         const todoId= req.params.id;
@@ -102,7 +97,7 @@ app.get('/api/id/:id', async (req,res)=>{
 
 
 // Update Route
-app.put('/api/update-todoposts/:id', async (req,res)=>{
+app.put('/update-todoposts/:id', async (req,res)=>{
     try{
         const todoposts = await TodoPost.findByIdAndUpdate(req.params.id, req.body,{new:true});
         return res.status(200).json({ msg: 'Successfull', data: todoposts})
