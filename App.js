@@ -9,7 +9,13 @@ const port = 5000;
 const app= express();
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(
+    {
+        origin: ["https://sagardas02-todo-app.vercel.app"],
+        methods: ["POST", "GET", "PUT", "DELETE"],
+        credentials: true
+    }
+));
 
 // connection of Database
 
@@ -47,7 +53,7 @@ const TodoPost = mongoose.model("TodoPost", TodoPostSchema );
 
 
 //add route
-app.post('/add', async (req,res)=>{
+app.post('/api/add', async (req,res)=>{
     try{
         const Todoposts = new TodoPost(req.body)
         const Addtodoposts = await Todoposts.save();
@@ -74,7 +80,7 @@ app.delete('/api/delete-todoposts/:id', async (req,res)=>{
 
 
 // view Route
-app.get('/', async (req,res)=>{
+app.get('/api', async (req,res)=>{
     try{
         const todoposts = await TodoPost.find();
         res.json(todoposts);
@@ -83,7 +89,7 @@ app.get('/', async (req,res)=>{
     }
 })
 
-app.get('/id/:id', async (req,res)=>{
+app.get('/api/id/:id', async (req,res)=>{
     try{
         const todoposts = await TodoPost.findById(req.params.id);
         const todoId= req.params.id;
@@ -96,7 +102,7 @@ app.get('/id/:id', async (req,res)=>{
 
 
 // Update Route
-app.put('/update-todoposts/:id', async (req,res)=>{
+app.put('/api/update-todoposts/:id', async (req,res)=>{
     try{
         const todoposts = await TodoPost.findByIdAndUpdate(req.params.id, req.body,{new:true});
         return res.status(200).json({ msg: 'Successfull', data: todoposts})
