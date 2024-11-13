@@ -33,6 +33,7 @@ process.env.MONGODB_URL  ,
   .then(() => console.log("Connected to MongoDB Atlas"))
   .catch((error) => console.error("Error connecting to MongoDB Atlas:", error.message));
   
+console.log("MongoDB URL:", process.env.MONGODB_URL);
 
 //  Creating DataBase Schema 
 
