@@ -78,8 +78,9 @@ app.delete('/api/delete-todoposts/:id', async (req,res)=>{
 // view Route
 app.get('/', async (req,res)=>{
     try{
-        const todoposts = await TodoPost.find();
-        res.json(todoposts);
+        // const todoposts = await TodoPost.find();
+        // res.json(todoposts);
+        res.json("Hello")
     } catch(error){ 
         res.status(500).json({ error: error.message})
     }
